@@ -9,6 +9,14 @@ export function UrlShortener() {
       initialValues: {
         url: "",
       },
+      onSubmit: async (values) => {
+        await fetch("http://localhost:4001/short", {
+          method: "POST",
+          body: JSON.stringify(values),
+          headers: { "content-type": "application/json" },
+        }).then(() => getUrl());
+        
+      },
     });
   return (
     <form onSubmit={handleSubmit}>
