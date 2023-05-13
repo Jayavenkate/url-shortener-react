@@ -11,6 +11,6 @@
   padding-right: 30px;
 }
 .btn {
-  width: 100px;
-  
+  display: flex;
+  margin: 0 auto;
 }
