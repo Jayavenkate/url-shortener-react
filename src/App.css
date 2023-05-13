@@ -1,0 +1,16 @@
+.url-short {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  width: 700px;
+  gap: 20px;
+  margin: 0 auto;
+  height: 200px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.btn {
+  width: 100px;
+  
+}
