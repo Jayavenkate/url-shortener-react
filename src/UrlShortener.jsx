@@ -4,6 +4,7 @@ import { Card, CardActions } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
+import { API } from "../global";
 export function UrlShortener() {
   const [data, setData] = useState([]);
   const { values, handleChange, handleBlur, handleSubmit, touched, errors } =
