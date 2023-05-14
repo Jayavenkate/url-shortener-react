@@ -3,7 +3,9 @@ import Button from "@mui/material/Button";
 import { Card, CardActions } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useEffect, useState } from "react";
 export function UrlShortener() {
+  const [data, setData] = useState([]);
   const { values, handleChange, handleBlur, handleSubmit, touched, errors } =
     useFormik({
       initialValues: {
@@ -18,6 +20,15 @@ export function UrlShortener() {
         
       },
     });
+    const getUrl = () => {
+      fetch("http://localhost:4001/url")
+       .then((res) => res.json())
+       .then((data) => console.log(data));
+   };
+   useEffect(() => {
+     getUrl();
+   }, []);
+
   return (
     <form onSubmit={handleSubmit}>
       <Card className="url-short" elevation={3}>
@@ -38,6 +49,22 @@ export function UrlShortener() {
           </Button>
         </CardActions>
       </Card>
+      <div>
+        {data.map((dt) => (
+          <Url key={dt._id} shortUrl={dt.short_url} />
+        ))}
+      </div>
     </form>
+  );
+}
+
+function Url({ shortUrl }) {
+  return (
+    <Card>
+      <h2>Shorten Link</h2>
+      <a href={`http://localhost:4001/${shortUrl}`}>
+        {`http://localhost:4001/${shortUrl}`}
+      </a>
+    </Card>
   );
 }
