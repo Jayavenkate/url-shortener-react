@@ -12,22 +12,21 @@ export function UrlShortener() {
         url: "",
       },
       onSubmit: async (values) => {
-        await fetch("http://localhost:4001/short", {
+        await fetch(`${API}/short`, {
           method: "POST",
           body: JSON.stringify(values),
           headers: { "content-type": "application/json" },
         }).then(() => getUrl());
-        
       },
     });
-    const getUrl = () => {
-      fetch("http://localhost:4001/url")
-       .then((res) => res.json())
-       .then((data) => console.log(data));
-   };
-   useEffect(() => {
-     getUrl();
-   }, []);
+  const getUrl = () => {
+    fetch(`${API}/url`)
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  };
+  useEffect(() => {
+    getUrl();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -62,9 +61,7 @@ function Url({ shortUrl }) {
   return (
     <Card>
       <h2>Shorten Link</h2>
-      <a href={`http://localhost:4001/${shortUrl}`}>
-        {`http://localhost:4001/${shortUrl}`}
-      </a>
+      <a href={`${API}/${shortUrl}`}>{`${API}/${shortUrl}`}</a>
     </Card>
   );
 }
