@@ -5,6 +5,11 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { API } from "../global";
+
+const formValidationSchema = yup.object({
+  url: yup.string().url().required("Enter Valid Url"),
+});
+
 export function UrlShortener() {
   const [data, setData] = useState([]);
   const { values, handleChange, handleBlur, handleSubmit, touched, errors } =
@@ -12,6 +17,7 @@ export function UrlShortener() {
       initialValues: {
         url: "",
       },
+      validationSchema: formValidationSchema,
       onSubmit: async (values) => {
         await fetch(`${API}/short`, {
           method: "POST",
@@ -23,7 +29,7 @@ export function UrlShortener() {
   const getUrl = () => {
     fetch(`${API}/url`)
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => setData(data));
   };
   useEffect(() => {
     getUrl();
