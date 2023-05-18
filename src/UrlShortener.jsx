@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { API } from "../global";
+import { ShortUrl } from "./ShortUrl";
 
 const formValidationSchema = yup.object({
   url: yup.string().url().required("Enter Valid Url"),
@@ -19,21 +20,25 @@ export function UrlShortener() {
       },
       validationSchema: formValidationSchema,
       onSubmit: async (values) => {
-        await fetch(`${API}/short`, {
+        console.log(values);
+        await fetch(`${API}/create`, {
           method: "POST",
           body: JSON.stringify(values),
           headers: { "content-type": "application/json" },
-        }).then(() => getUrl());
+        })
+          .then((res) => res.json())
+          .then((data) => setData(data));
+        // .then(() => getUrl());
+        // const getUrl = async() => {
+        //  await fetch(`${API}/url`)
+        //     .then((res) => res.json())
+        //     .then((data) => console.log(data));
+        // };
+        // useEffect(() => {
+        //   getUrl();
+        // }, []);
       },
     });
-  const getUrl = () => {
-    fetch(`${API}/url`)
-      .then((res) => res.json())
-      .then((data) => setData(data));
-  };
-  useEffect(() => {
-    getUrl();
-  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -56,19 +61,12 @@ export function UrlShortener() {
         </CardActions>
       </Card>
       <div>
-        {data.map((dt) => (
-          <Url key={dt._id} shortUrl={dt.short_url} />
-        ))}
+        {/* {data.map((dt) => (
+          <ShortUrl shortUrl={dt.short_url} />
+        ))} */}
       </div>
     </form>
   );
 }
 
-function Url({ shortUrl }) {
-  return (
-    <Card>
-      <h2>Shorten Link</h2>
-      <a href={`${API}/${shortUrl}`}>{`${API}/${shortUrl}`}</a>
-    </Card>
-  );
-}
+//
