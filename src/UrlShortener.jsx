@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { API } from "../global";
-import { ShortUrl } from "./ShortUrl";
+// import { ShortUrl } from "./ShortUrl";
 
 const formValidationSchema = yup.object({
   url: yup.string().url().required("Enter Valid Url"),
@@ -19,24 +19,21 @@ export function UrlShortener() {
         url: "",
       },
       validationSchema: formValidationSchema,
-      onSubmit: async (values) => {
+      onSubmit: (values) => {
         console.log(values);
-        await fetch(`${API}/create`, {
+        fetch(`${API}/create`, {
           method: "POST",
           body: JSON.stringify(values),
           headers: { "content-type": "application/json" },
-        })
-          .then((res) => res.json())
-          .then((data) => setData(data));
-        // .then(() => getUrl());
-        // const getUrl = async() => {
-        //  await fetch(`${API}/url`)
-        //     .then((res) => res.json())
-        //     .then((data) => console.log(data));
-        // };
-        // useEffect(() => {
-        //   getUrl();
-        // }, []);
+        }).then(() => getUrl());
+        const getUrl = () => {
+          fetch(`${API}/url`)
+            .then((res) => res.json())
+            .then((data) => setData(data));
+        };
+        useEffect(() => {
+          getUrl();
+        }, []);
       },
     });
 
@@ -56,17 +53,25 @@ export function UrlShortener() {
         />
         <CardActions className="btn">
           <Button type="submit" variant="contained">
-            Contained
+            Submit
           </Button>
         </CardActions>
       </Card>
       <div>
-        {/* {data.map((dt) => (
-          <ShortUrl shortUrl={dt.short_url} />
-        ))} */}
+        {data.map((dt) => (
+          <ShortUrl key={dt._id} shortUrl={dt.short_url} />
+        ))}
       </div>
     </form>
   );
 }
 
-//
+function ShortUrl({ shortUrl }) {
+  return (
+    <Card className="short-link" elevation={3}>
+      <h2>Shorten Link</h2>
+
+      <a href={`${API}/${shortUrl}`}>{`${API}/${shortUrl}`}</a>
+    </Card>
+  );
+}
